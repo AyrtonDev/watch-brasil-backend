@@ -41,4 +41,8 @@ export class JwtAdapter implements JWT {
       return null
     }
   }
+
+  decoded (token: string): any {
+    return verify(token, this.secret, { ignoreExpiration: true })
+  }
 }

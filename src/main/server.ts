@@ -1,6 +1,15 @@
+import { PostgreeHelper } from '../infra/db/postgreedb/helpers/postgree-helper';
 import app from './config/app'
+import dotenv from 'dotenv';
 
-const PORT = 5050
+dotenv.config();
 
-// eslint-disable-next-line no-console
-app.listen(PORT, () => { console.log('Server running at http://localhost:5050'); })
+const port = process.env.PORT
+
+PostgreeHelper.connect()
+  .then(() => {
+    app.listen(port, () => { 
+      console.log(`Server running at http://localhost:${port}`); 
+      console.log(`📄 Documentação disponível em http://localhost:${port}/api-docs`)
+    })
+  }).catch(console.error)

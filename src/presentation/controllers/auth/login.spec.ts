@@ -1,7 +1,41 @@
+import type { Encrypter } from "../../../data/protocols/encrypt"
 import { InvalidParamError, MissingParamError, NotFoundError, ServerError } from "../../errors"
 import { CLIENT_ERROR, NOT_FOUND_ERROR, SERVER_ERROR } from "../../helpers/http-helper"
-import type { EmailValidator, AccountModel, GetAccount, GetAccountModel } from "./auth-protocols"
+import type { JWT } from "../../protocols/jwt"
+import type { EmailValidator, AccountModel, GetAccount } from "./auth-protocols"
 import { LoginController } from "./login"
+
+const makeEncrypt = (): Encrypter => {
+  class EncrypterStub implements Encrypter {
+    async encrypt (value: string): Promise<string> {
+      return await Promise.resolve('hashed_value')
+    }
+
+    async compare (value: string, hash: string): Promise<boolean> {
+      return await Promise.resolve(true)
+    }
+  }
+
+  return new EncrypterStub()
+}
+
+const makeJwt = (): JWT => {
+  class JwtStub implements JWT {
+    generate (id: string): string {
+      return 'token_valid'
+    }
+
+    isValid (token: string): boolean {
+      return true
+    }
+
+    refresh (token: string): string {
+      return "new_token"
+    }
+  }
+
+  return new JwtStub()
+}
 
 const makeEmailValidator = (): EmailValidator => {
   class EmailValidatorStub implements EmailValidator {
@@ -14,7 +48,7 @@ const makeEmailValidator = (): EmailValidator => {
 
 const makeGetAccount = (): GetAccount => {
   class GetAccountStub implements GetAccount {
-    async get (account: GetAccountModel): Promise<AccountModel> {
+    async get (email: string): Promise<AccountModel | null> {
       const fakeAccount = {
         id: 'valid_id',
         name: 'valid_name',
@@ -38,7 +72,9 @@ interface SutTypes {
 const makeSut = (): SutTypes => {
   const emailValidatorStub = makeEmailValidator()
   const getAccountStub = makeGetAccount()
-  const sut = new LoginController(emailValidatorStub, getAccountStub)
+  const jwtStub = makeJwt()
+  const encryptStub = makeEncrypt()
+  const sut = new LoginController(emailValidatorStub, getAccountStub, jwtStub, encryptStub)
 
   return {
     sut,
@@ -129,15 +165,12 @@ describe('Login Controller', () => {
       }
     }
     await sut.handle(httpRequest)
-    expect(addSpy).toHaveBeenCalledWith({
-      email: 'any_email@mail.com',
-      password: 'any_password',
-    })
+    expect(addSpy).toHaveBeenCalledWith('any_email@mail.com')
   })
 
   test('Should return 404 if account not found', async () => {
     const { sut, getAccountStub } = makeSut()
-    jest.spyOn(getAccountStub, 'get').mockResolvedValueOnce(undefined)
+    jest.spyOn(getAccountStub, 'get').mockResolvedValueOnce(null)
     const httpRequest = {
       body: {
         email: 'any_email@mail.com',

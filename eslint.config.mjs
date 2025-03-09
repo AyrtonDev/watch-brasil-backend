@@ -21,7 +21,11 @@ export default [
       "@typescript-eslint/no-unsafe-member-access": "off",
       "@typescript-eslint/no-unsafe-argument": "off",
       "@typescript-eslint/no-unsafe-assignment": "off",
-      "@typescript-eslint/prefer-destructuring": "off"
+      "@typescript-eslint/prefer-destructuring": "off",
+      "@typescript-eslint/no-unsafe-return": "off",
+      "@typescript-eslint/no-magic-numbers": "off",
+      "@typescript-eslint/no-unsafe-call": "off",
+      "no-console": "off"
     }
   }
 ];

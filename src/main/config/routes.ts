@@ -1,13 +1,16 @@
-import type { Express } from 'express'
-import { Router } from 'express'
+import { Router, type Express } from 'express'
+import fs from 'fast-glob'
 
 export default (app: Express): void => {
   const router = Router()
+  app.use('/api', router)
+  const files = fs.async('**/src/main/routes/**-routes.ts')
 
-  const routeFiles = fg.sync('**/src/main/routes/**-routes.ts')
-
-  routeFiles.map(async file => {
-    const route = await import(`../../../${file}`)
-    route.default(router)
-  })
+  files
+    .then(resolve => resolve.map(async file => {
+      const { default: route } = await import(`../../../${file}`)
+      route(router)
+    }))
+    // eslint-disable-next-line no-console
+    .catch((error: unknown) => { console.error(error); })
 }

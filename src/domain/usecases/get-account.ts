@@ -6,5 +6,5 @@ export interface GetAccountModel {
 }
 
 export interface GetAccount {
-  get: (account: GetAccountModel) => Promise<AccountModel | undefined>
+  get: (email: string) => Promise<AccountModel | null>
 }

@@ -32,6 +32,10 @@ const makeJwt = (): JWT => {
     refresh (token: string): string {
       return "new_token"
     }
+
+    decoded (token: string): any {
+      return { email: 'any_email@email.com'}
+    }
   }
 
   return new JwtStub()

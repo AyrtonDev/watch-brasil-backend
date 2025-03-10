@@ -23,13 +23,12 @@ export class GetMoviesController implements Controller {
 
       const movies = await this.getMovies.get()
 
-      return ok({
-        movies: movies.map(movie => ({
+      return ok(movies.map(movie => ({
           id: movie.id,
           title: movie.title,
           img: movie.img
         }))
-      })
+      )
     } catch(error) {
       return serverError()
     }

@@ -1,9 +1,9 @@
 import { Router, type Express } from 'express'
 import fs from 'fast-glob'
 
-const isProduction = process.env.NODE_ENV === 'production';
-const baseDir = isProduction ? 'dist' : 'src';
-const fileExtension = isProduction ? 'js' : 'ts';
+const isProduction = process.env.NODE_ENV ?? 'production';
+const baseDir = isProduction === 'production' ? 'dist' : 'src';
+const fileExtension = isProduction === 'production' ? 'js' : 'ts';
 
 export default (app: Express): void => {
   const router = Router()

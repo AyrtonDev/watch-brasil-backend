@@ -1,0 +1,5 @@
+export type * from '../../protocols/get-movies-repository'
+export type * from '../../protocols/get-movie-repository'
+export type * from '../../../domain/model/profile'
+export type * from '../../../domain/usecases/get-movies'
+export type * from '../../../domain/usecases/get-movie'

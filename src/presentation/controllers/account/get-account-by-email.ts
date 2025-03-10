@@ -19,7 +19,9 @@ export class AccountController implements Controller {
     try {
       const { token } = httpRequest.body
 
-      if (!token) {
+      const isValid = this.jwt.isValid(token)
+      
+      if (!token || !isValid) {
         return notAuthorized()
       }
 
@@ -33,7 +35,15 @@ export class AccountController implements Controller {
 
       console.log(profiles)
 
-      return ok('tudo certo')
+      return ok({
+        name: account.name,
+        profiles: profiles?.map(profile => ({
+          id: profile.id,
+          name: profile.name,
+          photo: profile.photo,
+          liked_movies: profile.liked_movies
+        }))
+      })
     } catch(error) {
       return serverError()
     }

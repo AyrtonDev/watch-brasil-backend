@@ -1,4 +1,4 @@
-import type { GetProfilesByAccountIdRepository } from "../../../../data/protocols/get-profle-by-account-id-respository";
+import type { GetProfilesByAccountIdRepository } from "../../../../data/protocols/get-profile-by-account-id-respository";
 import type { ProfileModel } from "../../../../domain/model/profile";
 import { PostgreeHelper } from "../helpers/postgree-helper";
 

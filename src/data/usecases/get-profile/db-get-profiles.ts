@@ -1,4 +1,4 @@
-import type { GetProfiles, GetProfilesByAccountIdRepository, ProfileModel } from "./db-get-profiles.protocol"
+import type { GetProfiles, GetProfilesByAccountIdRepository, ProfileModel } from "./db-get-profiles.protocols"
 
 export class DbGetProfiles implements GetProfiles {
   private readonly getProfilesByAccountIdRepository: GetProfilesByAccountIdRepository

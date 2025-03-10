@@ -1,6 +1,6 @@
 export interface ProfileModel {
   id: string
   name: string
-  liked: [string]
-  watched: [string]
+  photo: string
+  liked_movies: [string]
 }

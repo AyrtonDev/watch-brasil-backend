@@ -25,7 +25,7 @@ export default [
       "@typescript-eslint/no-unsafe-return": "off",
       "@typescript-eslint/no-magic-numbers": "off",
       "@typescript-eslint/no-unsafe-call": "off",
-      "no-console": "off"
+      "no-console": "off",
     }
   }
 ];
